@@ -20,5 +20,24 @@ namespace lab_2_verevka
         {
             InitializeComponent();
         }
+
+        // Единый обработчик для всех кнопок символов
+        private void InsertSymbol_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                string symbol = button.Content.ToString();
+                InsertTextAtCaret(FormulaInput, symbol);
+            }
+        }
+
+        // Метод вставки текста в место курсора
+        private void InsertTextAtCaret(TextBox textBox, string text)
+        {
+            int selectionStart = textBox.SelectionStart;
+            textBox.Text = textBox.Text.Insert(selectionStart, text);
+            textBox.SelectionStart = selectionStart + text.Length;
+            textBox.Focus();
+        }
     }
 }
