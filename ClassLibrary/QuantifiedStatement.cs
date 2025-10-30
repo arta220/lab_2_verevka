@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 namespace ClassLibrary
 {
     // класс для реализации операций над кванторами (?)
-    internal class QuantifiedStatement
+    public class QuantifiedStatement
     {
+        public string FeasibilityCheck(string assigment)
+        {
+            string feasibility = "";
+
+            return feasibility;
+        }
     }
 }

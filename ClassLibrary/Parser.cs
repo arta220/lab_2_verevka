@@ -7,6 +7,11 @@
 
     public class Parser
     {
-
+        public bool TryParsePredicate(string input)
+        {
+            return false;
+        }
     }
+    
+
 }
