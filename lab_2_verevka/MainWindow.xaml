@@ -10,188 +10,195 @@
         Background="#f5f6fa"
         WindowStartupLocation="CenterScreen">
 
-    <DockPanel>
-        <!-- Верхнее меню -->
-        <Menu DockPanel.Dock="Top" Background="#FF2C2F33" Foreground="#FFE0E0E0" FontSize="14" FontFamily="Segoe UI" Padding="5">
-            <Menu.Resources>
-                <!-- Стиль для пунктов меню -->
-                <Style TargetType="MenuItem">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="#FFE0E0E0"/>
-                    <!-- Светло-серый текст -->
-                    <Setter Property="Padding" Value="8,4"/>
-                    <Setter Property="Margin" Value="4,0"/>
-                    <Setter Property="Cursor" Value="Hand"/>
 
-                </Style>
-            </Menu.Resources>
+    <!-- Основной контент с новой Grid-структурой -->
+    <TabControl FontSize="14" Margin="10">
+        <!-- Главная вкладка с объединенным функционалом -->
+        <TabItem Header="Логический калькулятор">
+            <!-- Главная сетка с 3 строками -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Строка 0: Редактор и операторы -->
+                    <RowDefinition Height="5"/>
+                    <!-- Строка 1: GridSplitter -->
+                    <RowDefinition Height="*"/>
+                    <!-- Строка 2: Область определения и результаты -->
+                </Grid.RowDefinitions>
 
-            <!-- Меню -->
-            <MenuItem Header="_Файл">
-                <MenuItem Header="Открыть..." />
-                <MenuItem Header="Сохранить" />
-                <Separator/>
-                <MenuItem Header="Выход" />
-            </MenuItem>
+                <!-- Строка 0: Сетка с редактором и операторами -->
+                <Grid Grid.Row="0" Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <!-- Колонка 0: Редактор формул -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Колонка 1: Операторы -->
+                    </Grid.ColumnDefinitions>
 
-            <MenuItem Header="_Вид">
-                <MenuItem Header="Светлая тема" />
-                <MenuItem Header="Тёмная тема" />
-            </MenuItem>
+                    <!-- Редактор формул -->
+                    <GroupBox Grid.Column="0" Header="Редактор формул" FontWeight="Bold" FontSize="14" Margin="0,0,10,0">
+                        <TextBox x:Name="FormulaInput"
+                                    AcceptsReturn="True"
+                                    TextWrapping="Wrap"
+                                    VerticalScrollBarVisibility="Auto"
+                                    FontSize="16"
+                                    Padding="10"
+                                    Height="80"/>
+                    </GroupBox>
 
-            <MenuItem Header="_Справка">
-                <MenuItem Header="О программе" />
-            </MenuItem>
-        </Menu>
+                    <!-- Панель операторов -->
+                    <GroupBox Grid.Column="1" Header="Операторы" FontWeight="Bold" FontSize="14">
+                        <StackPanel Orientation="Vertical" Width="300">
+                            <!-- Логические операторы -->
+                            <TextBlock Text="Логические операторы:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <WrapPanel>
+                                <Button x:Name="AndButton" Content="∧" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="OrButton" Content="∨" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="NotButton" Content="¬" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="ImplButton" Content="→" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="EqvButton" Content="↔" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="ForallButton" Content="∀" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="ExistsButton" Content="∃" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                            </WrapPanel>
 
-        <!-- Основные вкладки -->
-        <TabControl DockPanel.Dock="Bottom" FontSize="14" Margin="10">
+                            <!-- Операторы сравнения -->
+                            <TextBlock Text="Операторы сравнения:" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                            <WrapPanel>
+                                <Button x:Name="EqualButton" Content="=" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="NotEqualButton" Content="≠" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="LessButton" Content="&lt;" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="GreaterButton" Content="&gt;" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="LessEqualButton" Content="≤" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="GreaterEqualButton" Content="≥" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                            </WrapPanel>
 
-            <!-- 1. Вкладка "Редактор формул" -->
-            <TabItem Header="Редактор формул">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Введите формулу предиката:" 
-                               FontWeight="Bold" FontSize="16"
-                               Margin="0,0,0,5"/>
-
-                    <!-- Поле ввода формулы -->
-                    <TextBox x:Name="FormulaInput"
-                             Grid.Row="1"
-                             AcceptsReturn="True"
-                             TextWrapping="Wrap"
-                             VerticalScrollBarVisibility="Auto"
-                             FontSize="16"
-                             Padding="10" Margin="0,10,0,271"/>
-
-                    <!-- Панель кнопок -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center">
-                        <Button x:Name="AndButton" Content="∧" FontSize="20" Width="45" Margin="3" Click="InsertSymbol_Click"/>
-                        <Button x:Name="OrButton" Content="∨" FontSize="20" Width="45" Margin="3" Click="InsertSymbol_Click"/>
-                        <Button x:Name="NotButton" Content="¬" FontSize="20" Width="45" Margin="3" Click="InsertSymbol_Click"/>
-                        <Button x:Name="ImplButton" Content="→" FontSize="20" Width="45" Margin="3" Click="InsertSymbol_Click"/>
-                        <Button x:Name="EqvButton" Content="↔" FontSize="20" Width="45" Margin="3" Click="InsertSymbol_Click"/>
-                        <Button x:Name="ForallButton" Content="∀" FontSize="20" Width="45" Margin="3" Click="InsertSymbol_Click"/>
-                        <Button x:Name="ExistsButton" Content="∃" FontSize="20" Width="45" Margin="3" Click="InsertSymbol_Click"/>
-                        <Button x:Name="CheckSyntaxButton" Content="Проверить синтаксис" FontSize="14" Margin="15,3,3,3" Padding="10,5"/>
-                        <Button x:Name="EvaluateButton" Content="Вычислить область истинности" FontSize="14" Margin="3" Padding="10,5"/>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-
-            <!-- 2. Вкладка "Область определения" -->
-            <TabItem Header="Область определения">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                        <TextBlock Text="Введите область определения:" FontWeight="Bold" FontSize="16"/>
-                        <RadioButton x:Name="rbList" Content="Список значений" IsChecked="True" Margin="0,5"/>
-                        <TextBox x:Name="DomainListInput" Height="45" FontSize="16" Padding="10"
-                                 Text="Например: 1, 2, 3, 4"/>
-                        <RadioButton x:Name="rbRange" Content="Диапазон значений" Margin="0,10,0,0"/>
-                        <StackPanel Orientation="Horizontal" Margin="10,0">
-                            <TextBlock Text="Min:" VerticalAlignment="Center"/>
-                            <TextBox x:Name="MinInput" Width="70" Margin="5"/>
-                            <TextBlock Text="Max:" VerticalAlignment="Center"/>
-                            <TextBox x:Name="MaxInput" Width="70" Margin="5"/>
-                            <TextBlock Text="Step:" VerticalAlignment="Center"/>
-                            <TextBox x:Name="StepInput" Width="70" Margin="5"/>
+                            <!-- Кнопка построения графика -->
+                            <Button x:Name="BuildGraphButton" Content="Построить график истинности" 
+                                    FontSize="14" Margin="0,15,0,0" Padding="10,5" Height="35"
+                                    Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
                         </StackPanel>
-                        <Button Content="Применить область" Width="200" Margin="0,10,0,0" Padding="5"/>
-                    </StackPanel>
-
-                    <GroupBox Grid.Row="1" Header="Текущая область" FontWeight="Bold" FontSize="14">
-                        <ListBox x:Name="DomainValuesList" FontSize="14"/>
                     </GroupBox>
                 </Grid>
-            </TabItem>
 
-            <!-- 3. Вкладка "Результаты и график" -->
-            <TabItem Header="Результаты и график">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                <!-- Строка 1: GridSplitter горизонтальный -->
+                <GridSplitter Grid.Row="1" 
+                                Height="5" 
+                                HorizontalAlignment="Stretch" 
+                                Background="LightGray"
+                                ShowsPreview="True"/>
 
-                    <!-- OxyPlot область -->
-                    <!--oxy:PlotView x:Name="TruthPlot" Grid.Row="0" -->
+                <!-- Строка 2: Сетка с тремя столбцами -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <!-- Колонка 0: Область определения -->
+                        <ColumnDefinition Width="5"/>
+                        <!-- Колонка 1: GridSplitter вертикальный -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Колонка 2: Результаты и график -->
+                    </Grid.ColumnDefinitions>
 
-                    <!-- Нижняя панель результатов -->
-                    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,10,0,0">
-                        <TextBlock Text="Результаты:" FontWeight="Bold" FontSize="16"/>
-                        <TextBox x:Name="ResultBox" Height="100" TextWrapping="Wrap"
-                                 VerticalScrollBarVisibility="Auto" FontSize="14"
-                                 IsReadOnly="True" Padding="10"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
-                            <Button Content="Экспортировать график" Margin="5"/>
-                            <Button Content="Очистить результаты" Margin="5"/>
-                        </StackPanel>
-                    </StackPanel>
+                    <!-- Колонка 0: Область определения -->
+                    <GroupBox Grid.Column="0" Header="Область определения" FontWeight="Bold" FontSize="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Vertical">
+                                <RadioButton x:Name="rbList" Content="Список значений" IsChecked="True" Margin="0,5"/>
+                                <TextBox x:Name="DomainListInput" Height="35" FontSize="14" Padding="5"
+                                            Text="Например: 1, 2, 3, 4" Margin="0,5,0,10"/>
+
+                                <RadioButton x:Name="rbRange" Content="Диапазон значений" Margin="0,5,0,0"/>
+                                <StackPanel Orientation="Horizontal" Margin="10,5">
+                                    <TextBlock Text="Min:" VerticalAlignment="Center" Width="30"/>
+                                    <TextBox x:Name="MinInput" Width="60" Margin="5" FontSize="14"/>
+                                    <TextBlock Text="Max:" VerticalAlignment="Center" Width="30"/>
+                                    <TextBox x:Name="MaxInput" Width="60" Margin="5" FontSize="14"/>
+                                    <TextBlock Text="Step:" VerticalAlignment="Center" Width="35"/>
+                                    <TextBox x:Name="StepInput" Width="60" Margin="5" FontSize="14"/>
+                                </StackPanel>
+
+                                <Button x:Name="ApplyDomainButton" Content="Применить область" 
+                                        Width="150" Margin="0,10,0,10" Padding="5" FontSize="14"
+                                        Background="#2196F3" Foreground="White"/>
+                            </StackPanel>
+
+                            <GroupBox Grid.Row="1" Header="Текущая область" FontWeight="Bold" FontSize="12" Margin="0,10,0,0">
+                                <ListBox x:Name="DomainValuesList" FontSize="12"/>
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Колонка 1: GridSplitter вертикальный -->
+                    <GridSplitter Grid.Column="1" 
+                                    Width="5" 
+                                    VerticalAlignment="Stretch" 
+                                    Background="LightGray"
+                                    ShowsPreview="True"
+                                    HorizontalAlignment="Center"/>
+
+                    <!-- Колонка 2: Результаты и график -->
+                    <GroupBox Grid.Column="2" Header="Результаты и график" FontWeight="Bold" FontSize="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Область для графика OxyPlot -->
+                            <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="0,0,0,10">
+                                <!--oxy:PlotView x:Name="TruthPlot" /-->
+                                <TextBlock Text="Область для графика OxyPlot" 
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Foreground="Gray" FontStyle="Italic"/>
+                            </Border>
+
+                            <!-- Панель результатов -->
+                            <StackPanel Grid.Row="1" Orientation="Vertical">
+                                <TextBlock Text="Результаты:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,5"/>
+                                <TextBox x:Name="ResultBox" Height="80" TextWrapping="Wrap"
+                                            VerticalScrollBarVisibility="Auto" FontSize="12"
+                                            IsReadOnly="True" Padding="5"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                                    <Button Content="Экспортировать график" Margin="5" Padding="8,3" FontSize="12"/>
+                                    <Button Content="Очистить результаты" Margin="5" Padding="8,3" FontSize="12"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
-            </TabItem>
+            </Grid>
+        </TabItem>
 
-            <!-- 4. Вкладка "Кванторы" -->
-            <TabItem Header="Кванторы">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBlock Text="Выберите тип квантора:" FontWeight="Bold" FontSize="16" Margin="0,0,10,0"/>
-                        <ComboBox x:Name="QuantifierType" Width="150" FontSize="14">
-                            <ComboBoxItem Content="∀ (для всех)" IsSelected="True"/>
-                            <ComboBoxItem Content="∃ (существует)"/>
-                        </ComboBox>
-                    </StackPanel>
-
-                    <TextBox x:Name="QuantifierFormulaInput"
-                             Grid.Row="1"
-                             Height="80" FontSize="16" Padding="10"
-                             Text="Введите формулу, например: ∀x P(x) → Q(x)"/>
-
-                    <StackPanel Grid.Row="2" Margin="0,10,0,0">
-                        <Button Content="Проверить" Width="150" Margin="0,0,0,10"/>
-                        <TextBlock Text="Ход вычислений:" FontWeight="Bold" FontSize="16"/>
-                        <RichTextBox x:Name="QuantifierLog"
-                                     Height="250" FontSize="14"
-                                     IsReadOnly="True"/>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-
-            <!-- 5. Вкладка "Справка" -->
-            <TabItem Header="Справка">
-                <ScrollViewer Margin="10">
-                    <StackPanel>
-                        <TextBlock Text="Руководство пользователя" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <TextBlock TextWrapping="Wrap">
-                            Это приложение реализует основные логические операции над предикатами и кванторами.
-                            Введите выражение, например: ∀x (P(x) → Q(x)), задайте область определения и выполните вычисление.
-                        </TextBlock>
-                        <TextBlock Text="Поддерживаемые операции:" FontWeight="Bold" Margin="0,10,0,5"/>
-                        <TextBlock Text="¬ — отрицание (NOT)" />
-                        <TextBlock Text="∧ — конъюнкция (AND)" />
-                        <TextBlock Text="∨ — дизъюнкция (OR)" />
-                        <TextBlock Text="→ — импликация" />
-                        <TextBlock Text="↔ — эквивалентность" />
-                        <TextBlock Text="∀ — квантор общности" />
-                        <TextBlock Text="∃ — квантор существования" />
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-        </TabControl>
-    </DockPanel>
+        <!-- Вкладка "Справка" (сохранена без изменений) -->
+        <TabItem Header="Справка">
+            <ScrollViewer Margin="10">
+                <StackPanel>
+                    <TextBlock Text="Руководство пользователя" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock TextWrapping="Wrap">
+                        Это приложение реализует основные логические операции над предикатами и кванторами.
+                        Введите выражение, например: ∀x (P(x) → Q(x)), задайте область определения и выполните вычисление.
+                    </TextBlock>
+                    <TextBlock Text="Поддерживаемые операции:" FontWeight="Bold" Margin="0,10,0,5"/>
+                    <TextBlock Text="¬ — отрицание (NOT)" />
+                    <TextBlock Text="∧ — конъюнкция (AND)" />
+                    <TextBlock Text="∨ — дизъюнкция (OR)" />
+                    <TextBlock Text="→ — импликация" />
+                    <TextBlock Text="↔ — эквивалентность" />
+                    <TextBlock Text="∀ — квантор общности" />
+                    <TextBlock Text="∃ — квантор существования" />
+                    <TextBlock Text="Новые операторы сравнения:" FontWeight="Bold" Margin="0,10,0,5"/>
+                    <TextBlock Text="= — равно" />
+                    <TextBlock Text="≠ — не равно" />
+                    <TextBlock Text="&lt; — меньше" />
+                    <TextBlock Text="&gt; — больше" />
+                    <TextBlock Text="≤ — меньше или равно" />
+                    <TextBlock Text="≥ — больше или равно" />
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
 </Window>
