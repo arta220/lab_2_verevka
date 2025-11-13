@@ -27,6 +27,8 @@ public interface IParserManager
     /// </summary>
     QuantifierEvaluationType GetQuantifierType(string expression);
 
-
+    /// <summary>
+    /// Извлекает имя переменной, связанной квантором (например, 'x' из '∀x (x>0)') или первую переменную в предикате.
+    /// </summary>
+    string ExtractQuantifierVariable(string expression);
 }
-

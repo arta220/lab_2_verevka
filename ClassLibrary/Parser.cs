@@ -1,30 +1,58 @@
-﻿    using System.Text.RegularExpressions;
-    using NCalc; 
+﻿using System.Text.RegularExpressions;
+using NCalc;
 
-    public class Parser
+public class Parser
+{
+    private static readonly string comparisonPattern = @"(<=|>=|==|!=|<|>|≠|≤|≥)"; // Для IsPredicate
+    private static readonly string variablePattern = @"[a-zA-Z]+"; // Для IsPredicate
+    private static readonly string quantifierPattern = @"(∀|∃)"; // Для DetectQuantifiers
+
+    // ПАТТЕРН ДЛЯ ПОИСКА ПЕРЕМЕННОЙ ПОСЛЕ КВАНТОРА: ^(опц. пробелы)(КВАНТОР)(опц. пробелы)(ПЕРЕМЕННАЯ - ГРУППА 2)
+    private static readonly string quantifierVariablePattern =
+        @"^\s*(∀|∃|forall|exists)\s*([a-zA-Z]+)";
+
+    /// <summary>
+    /// Проверяет, является ли введённая строка предикатом 
+    /// (наличие операторов сравнения И переменных).
+    /// </summary>
+    public bool IsPredicate(string expression)
     {
-        private static readonly string comparisonPattern = @"(<=|>=|==|!=|<|>|≠|≤|≥)"; // Для IsPredicate
-        private static readonly string variablePattern = @"[a-zA-Z]+"; // Для IsPredicate
-        private static readonly string quantifierPattern = @"(∀|∃)"; // Для DetectQuantifiers
+        return Regex.IsMatch(expression, comparisonPattern) &&
+               Regex.IsMatch(expression, variablePattern);
+    }
 
-        /// <summary>
-        /// Проверяет, является ли введённая строка предикатом 
-        /// (наличие операторов сравнения И переменных).
-        /// </summary>
-        public bool IsPredicate(string expression)
+    /// <summary>
+    /// Обнаруживает, есть ли в строке символы кванторов.
+    /// </summary>
+    public bool DetectQuantifiers(string expression)
+    {
+        return Regex.IsMatch(expression, quantifierPattern);
+    }
+
+    /// <summary>
+    /// Извлекает имя переменной, связанной квантором (например, 'x' из '∀x (x>0)').
+    /// </summary>
+    /// <param name="expression">Исходное выражение.</param>
+    /// <returns>Имя переменной (напр., "x") или первая переменная в предикате.</returns>
+    public string ExtractQuantifierVariable(string expression)
+    {
+        var match = Regex.Match(expression, quantifierVariablePattern, RegexOptions.IgnoreCase);
+
+        // Группа 2 содержит имя переменной, связанной квантором
+        if (match.Success && match.Groups.Count >= 3)
         {
-            // (Ваш код)
-            return Regex.IsMatch(expression, comparisonPattern) &&
-                   Regex.IsMatch(expression, variablePattern);
+            return match.Groups[2].Value;
         }
 
-        /// <summary>
-        /// Обнаруживает, есть ли в строке символы кванторов.
-        /// </summary>
-        public bool DetectQuantifiers(string expression)
+        // Если квантора нет, ищем первую переменную в предикате
+        var varMatch = Regex.Match(expression, variablePattern);
+        if (varMatch.Success)
         {
-            return Regex.IsMatch(expression, quantifierPattern);
+            return varMatch.Value;
         }
+
+        return string.Empty;
+    }
 
     /// <summary>
     /// Приводит логические и математические символы Юникода к формату NCalc.
@@ -53,8 +81,7 @@
         // 2.3. Математические символы
         normalized = normalized.Replace(":", "/"); // Деление
 
-        // 2.4. Преобразуем одиночные '=' в '==' только если это не часть других операторов
-        // Регулярка: заменить "=" на "==", если слева и справа нет <, >, ! или =.
+        // 2.4. Преобразуем одиночные '=' в '=='
         normalized = Regex.Replace(normalized, @"(?<![<>!=])=(?![=])", "==");
 
         // --- 3. Финальная очистка ---
@@ -68,6 +95,4 @@
 
         return normalized;
     }
-
-
 }

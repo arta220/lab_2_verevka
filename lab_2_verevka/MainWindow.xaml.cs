@@ -132,6 +132,13 @@ namespace lab_2_verevka
                 // Получаем данные от парсера
                 bool hasQuantifiers = _parserManager.HasQuantifiers(formula);
                 string ncalcText = _parserManager.NormalizeToNCalc(formula);
+                // ИЗВЛЕЧЕНИЕ ПЕРЕМЕННОЙ НАКОНЕЦ-ТО
+                string variableName = _parserManager.ExtractQuantifierVariable(formula);
+
+                if (string.IsNullOrEmpty(variableName))
+                {
+                    throw new ArgumentException("Не удалось определить имя переменной в предикате. Проверьте синтаксис.");
+                }
 
                 // --- 4. Создание предиката (общая часть) ---
 
@@ -140,7 +147,8 @@ namespace lab_2_verevka
                 try
                 {
                     var ncalcExpr = new NCalc.Expression(ncalcText);
-                    predicate = new Predicate(ncalcExpr, hasQuantifiers);
+                    // !!! ИЗМЕНЕНИЕ: Используем новый конструктор Predicate !!!
+                    predicate = new Predicate(ncalcExpr, hasQuantifiers, variableName);
                 }
                 catch (Exception ncalcEx)
                 {
@@ -171,11 +179,11 @@ namespace lab_2_verevka
                     // Вывод результата
                     ResultBox.Background = isTrue ? Brushes.LightGreen : Brushes.LightPink;
                     ResultBox.Text = $"ВЫСКАЗЫВАНИЕ С КВАНТОРОМ:\n" +
-                                     $"Формула: {quantifierSymbol}x ({formula})\n" +
-                                     $"Квантор: {quantifierName}\n" +
-                                     $"Домен: [{min:F2}, {max:F2}], шаг: {step:F4}\n" +
-                                     $"Результат: **{truthResult}**\n\n" +
-                                     $"График для высказываний с квантором не строится.";
+                                        $"Формула: {quantifierSymbol}{variableName} ({formula})\n" + // !!! ДОБАВЛЕНО: вывод имени переменной !!!
+                                        $"Квантор: {quantifierName}\n" +
+                                        $"Домен: [{min:F2}, {max:F2}], шаг: {step:F4}\n" +
+                                        $"Результат: **{truthResult}**\n\n" +
+                                        $"График для высказываний с квантором не строится.";
 
                     return;
                 }
@@ -192,9 +200,10 @@ namespace lab_2_verevka
 
                 // Вывод результата
                 ResultBox.Text = $"Анализ завершен.\n" +
-                                $"Тип предиката: {type}\n" +
-                                $"Область NCalc: {ncalcText}\n" +
-                                $"Найдено отрезков истинности: {segments.Count}";
+                                 $"Переменная: {variableName}\n" + // !!! ДОБАВЛЕНО: вывод имени переменной !!!
+                                 $"Тип предиката: {type}\n" +
+                                 $"Область NCalc: {ncalcText}\n" +
+                                 $"Найдено отрезков истинности: {segments.Count}";
             }
             catch (Exception ex)
             {
