@@ -51,7 +51,7 @@ public class PredicateLogicTests
                 var expr = new NCalc.Expression("y>=5 and y<=15");
 
 
-                var predicate = new Predicate(expr, false);
+                var predicate = new Predicate(expr, false, "y");
 
 
                 double min = -10;
@@ -79,7 +79,7 @@ public class PredicateLogicTests
                 var expr = new NCalc.Expression("x > 0");
 
                 // isQuantified = false
-                var predicate = new Predicate(expr, false);
+                var predicate = new Predicate(expr, false,"x");
 
                 // Домен [-2, 2]. Истина для x=1,2. Ложь для x=-2,-1,0. => Satisfiable.
                 var result = analyzer.DeterminePredicateType(predicate, -2, 2, 1);
@@ -98,7 +98,7 @@ public class PredicateLogicTests
                 var analyzer = new PredicateAnalyzer();
                 var expr = new NCalc.Expression("x > 0");
                 // isQuantified = true
-                var predicate = new Predicate(expr, true);
+                var predicate = new Predicate(expr, true,"x");
 
                 var result = analyzer.EvaluateQuantifiedStatement(
                     predicate,
@@ -117,7 +117,7 @@ public class PredicateLogicTests
             {
                 var analyzer = new PredicateAnalyzer();
                 var expression = new NCalc.Expression("x > 0");
-                var predicate = new Predicate(expression, true);
+                var predicate = new Predicate(expression, true,"x");
 
                 bool result = analyzer.EvaluateQuantifiedStatement(
                     predicate,
@@ -133,7 +133,7 @@ public class PredicateLogicTests
             {
                 var analyzer = new PredicateAnalyzer();
                 var expression = new NCalc.Expression("x > 0");
-                var predicate = new Predicate(expression, true);
+                var predicate = new Predicate(expression, true,"x");
 
                 bool result = analyzer.EvaluateQuantifiedStatement(
                     predicate,
@@ -149,7 +149,7 @@ public class PredicateLogicTests
             {
                 var analyzer = new PredicateAnalyzer();
                 var expression = new NCalc.Expression("x > 0");
-                var predicate = new Predicate(expression, true);
+                var predicate = new Predicate(expression, true,"x");
 
                 bool result = analyzer.EvaluateQuantifiedStatement(
                     predicate,
@@ -165,7 +165,7 @@ public class PredicateLogicTests
             {
                 var analyzer = new PredicateAnalyzer();
                 var expression = new NCalc.Expression("x > 0");
-                var predicate = new Predicate(expression, true);
+                var predicate = new Predicate(expression, true,"x");
 
                 bool result = analyzer.EvaluateQuantifiedStatement(
                     predicate,
@@ -184,7 +184,7 @@ public class PredicateLogicTests
             {
                 var analyzer = new PredicateAnalyzer();
                 var expression = new NCalc.Expression("x == x"); // Всегда истинно
-                var predicate = new Predicate(expression, true);
+                var predicate = new Predicate(expression, true, "x");
 
                 // Пустой домен (min > max). Классически: "Для любого x в пустом множестве P(x)" считается True.
                 // Однако, в дискретном вычислении для предотвращения False Negative,
@@ -206,7 +206,7 @@ public class PredicateLogicTests
             {
                 var analyzer = new PredicateAnalyzer();
                 var expression = new NCalc.Expression("x == x"); // Всегда истинно
-                var predicate = new Predicate(expression, true);
+                var predicate = new Predicate(expression, true, "x");
 
                 bool result = analyzer.EvaluateQuantifiedStatement(
                     predicate,
@@ -249,7 +249,7 @@ public class PredicateLogicTests
                 // 3. Создание предиката
                 // NCalcExpression в Predicate создается из ncalcText
                 var ncalcExpr = new NCalc.Expression(ncalcText);
-                var predicate = new Predicate(ncalcExpr, hasQuantifiers);
+                var predicate = new Predicate(ncalcExpr, hasQuantifiers, "x");
 
                 // 4. Логика обработки кванторов
                 if (hasQuantifiers)
