@@ -10,7 +10,6 @@ public class ParserManager : IParserManager // Предполагаю, что IP
     private readonly Parser _parser;
     public ParserManager(Parser parser) => _parser = parser;
 
-    // --- Существующие методы ---
 
     public bool IsPredicate(string expression)
     {
@@ -36,13 +35,6 @@ public class ParserManager : IParserManager // Предполагаю, что IP
         return _parser.NormalizeToNCalc(expression);
     }
 
-    // --- НОВЫЙ МЕТОД: Извлечение имени переменной ---
-
-    /// <summary>
-    /// Извлекает имя переменной, связанной квантором, или первую переменную в предикате.
-    /// </summary>
-    /// <param name="expression">Исходное выражение с квантором или без.</param>
-    /// <returns>Имя переменной (напр., "x") или пустая строка, если не найдена.</returns>
     public string ExtractQuantifierVariable(string expression)
     {
         if (string.IsNullOrWhiteSpace(expression))
@@ -52,7 +44,6 @@ public class ParserManager : IParserManager // Предполагаю, что IP
         return _parser.ExtractQuantifierVariable(expression);
     }
 
-    // --- Существующий метод GetQuantifierType ---
 
     public QuantifierEvaluationType GetQuantifierType(string expression)
     {

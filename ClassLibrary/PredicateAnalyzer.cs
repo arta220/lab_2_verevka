@@ -19,7 +19,6 @@ public class PredicateAnalyzer
 {
     public enum PredicateType { AlwaysTrue, AlwaysFalse, Satisfiable }
 
-    // !!! ИЗМЕНЕН: Теперь принимает имя переменной !!!
     private bool EvaluateAtPoint(Expression expression, double x, string variableName)
     {
         // Используем динамическое имя переменной
@@ -65,7 +64,6 @@ public class PredicateAnalyzer
 
         for (double x = min; x <= max; x += step)
         {
-            // !!! ПЕРЕДАЕМ ИМЯ ПЕРЕМЕННОЙ !!!
             if (EvaluateAtPoint(predicate._NCalcExpression, x, variableName))
                 hasFoundTrue = true;
             else
@@ -97,7 +95,7 @@ public class PredicateAnalyzer
         // Используем 'max + step/2' для гарантированного включения конечной точки max
         for (double x = min; x <= max + (step / 2.0); x += step)
         {
-            // !!! ПЕРЕДАЕМ ИМЯ ПЕРЕМЕННОЙ !!!
+
             bool currentState = EvaluateAtPoint(expression, x, variableName);
 
             if (currentState && !previousState)
@@ -153,7 +151,6 @@ public class PredicateAnalyzer
         {
             hasAnyPoint = true;
 
-            // !!! ПЕРЕДАЕМ ИМЯ ПЕРЕМЕННОЙ !!!
             bool resultAtPoint = EvaluateAtPoint(expression, x, variableName);
 
             if (evaluationType == QuantifierEvaluationType.Universal)

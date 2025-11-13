@@ -32,8 +32,7 @@ public class PlotGenerator
 
         // 3. Серия данных (отрезки)
         // Мы будем использовать 'IntervalBarSeries' или 'AreaSeries' для отрезков.
-        // Самый простой способ - использовать 'ScatterSeries' для точек.
-        // Но для "отрезков" лучше 'LineSeries' или 'AreaSeries'.
+
 
         var series = new AreaSeries
         {

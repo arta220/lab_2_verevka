@@ -61,30 +61,28 @@ public class Parser
     {
         string normalized = expression;
 
-        // --- 1. Удаление кванторов и связанных переменных ---
+        // удаление кванторов
         normalized = Regex.Replace(normalized, @"(∀|∃|forall|exists)\s*[a-zA-Z]\s*", "", RegexOptions.IgnoreCase).Trim();
         normalized = Regex.Replace(normalized, @"(∀|∃)\s*", "").Trim();
 
-        // --- 2. Нормализация символов ---
-        // 2.1. Сложные операторы (обрабатываем первыми!)
+        // сначала замена сложных операторов (!)
         normalized = normalized.Replace("≠", "!=")
                                .Replace("≥", ">=")
                                .Replace("≤", "<=")
                                .Replace("↔", "<=>")
                                .Replace("→", "=>");
 
-        // 2.2. Логические операторы
+
         normalized = normalized.Replace("∧", " and ")
                                .Replace("∨", " or ")
                                .Replace("¬", " not ");
 
-        // 2.3. Математические символы
         normalized = normalized.Replace(":", "/"); // Деление
 
-        // 2.4. Преобразуем одиночные '=' в '=='
+        //  Преобразуем одиночные '=' в '=='
         normalized = Regex.Replace(normalized, @"(?<![<>!=])=(?![=])", "==");
 
-        // --- 3. Финальная очистка ---
+        // удаление лишних пробелов
         normalized = Regex.Replace(normalized, @"\s+", " ").Trim();
 
         // Удаление лишних внешних скобок
