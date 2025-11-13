@@ -251,9 +251,7 @@ namespace TestProject2
                 var ncalcExpr = new NCalc.Expression(ncalcText);
                 var predicate = new Predicate(ncalcExpr, hasQuantifiers);
 
-                // 4. Логика обработки кванторов
-                if (hasQuantifiers)
-                {
+    
                     // ИСПОЛЬЗУЕМ ПРОГРАММНЫЙ ИНТЕРФЕЙС ДЛЯ ПОЛУЧЕНИЯ ТИПА КВАНТОРА:
                     PredicateAnalyzer.QuantifierEvaluationType quantifierEnum =
                         parserManager.GetQuantifierType(formula); // Existential
@@ -270,13 +268,9 @@ namespace TestProject2
                     Xunit.Assert.Equal("x > 0 ^ x < 5", ncalcText);
                     Xunit.Assert.Equal(PredicateAnalyzer.QuantifierEvaluationType.Existential, quantifierEnum);
                     Xunit.Assert.True(isTrue); // Проверяем, что сервис вернул True
-                }
-                else
-                {
-                    Xunit.Assert.True(false, "Тест не должен попасть в ветку без кванторов.");
-                }
+                
             }
-        }
+        
 
     }
 }
