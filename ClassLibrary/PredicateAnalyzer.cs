@@ -12,7 +12,7 @@ public class TruthSegment
 }
 
 /// <summary>
-/// "Новый класс" для анализа предиката.
+/// Класс для анализа предиката.
 /// Определяет тип и вычисляет область истинности.
 /// </summary>
 public class PredicateAnalyzer
@@ -22,14 +22,39 @@ public class PredicateAnalyzer
     private bool EvaluateAtPoint(Expression expression, double x)
     {
         expression.Parameters["x"] = x;
+
         try
         {
-            // Поскольку это Expression (не CompiledExpression), NCalc парсит его каждый раз.
-            return (bool)expression.Evaluate();
+            object result = expression.Evaluate();
+
+
+            if (result is bool b)
+            {
+                return b;
+            }
+
+            // Числовое значение 
+            // Также обрабатывает 0 как False, а любое другое число как True (как в C)
+            if (result is int i)
+            {
+                return i != 0;
+            }
+
+            if (result is double d)
+            {
+                // Если предикат типа 'x>0', результат должен быть bool. 
+                // Но на случай, если NCalc возвращает 0.0 или 1.0, обрабатываем это как False/True.
+                return Math.Abs(d) > 0.0001;
+            }
+
+            // Если выражение не является булевым (например, "x + 5"), 
+            // или имеет недопустимый тип, считаем это ошибкой и возвращаем False.
+            return false;
         }
         catch
         {
-            return false; // Ошибки (деление на ноль, синтаксис) считаем Ложью
+            // Ошибки во время вычисления (деление на ноль, синтаксическая ошибка в expression.Evaluate())
+            return false;
         }
     }
 
@@ -124,15 +149,6 @@ public class PredicateAnalyzer
         Existential
     }
 
-    /// <summary>
-    /// Вычисляет истинность (True/False) высказывания с квантором на заданном домене.
-    /// </summary>
-    /// <param name="predicate">Объект предиката (содержащий P(x)).</param>
-    /// <param name="evaluationType">Тип квантора (∀ или ∃), который должен применить ПИ.</param>
-    /// <param name="min">Минимум домена.</param>
-    /// <param name="max">Максимум домена.</param>
-    /// <param name="step">Шаг домена.</param>
-    /// <returns>True или False.</returns>
     public bool EvaluateQuantifiedStatement(
         Predicate predicate,
         QuantifierEvaluationType evaluationType,
@@ -144,46 +160,53 @@ public class PredicateAnalyzer
             throw new ArgumentNullException(nameof(predicate));
 
         var expression = predicate._NCalcExpression;
+        bool hasAnyPoint = false; // Флаг для отслеживания, был ли домен непустым
 
-        bool foundTrue = false;
-        bool foundFalse = false;
-
-        // Обрабатываем все точки домена
-        for (double x = min; x <= max + (step / 2.0); x += step) // +step/2 для учета погрешности округления
+        // --- 1. Основной цикл ---
+        for (double x = min; x <= max + (step / 2.0); x += step)
         {
+            hasAnyPoint = true; // Домен не пуст!
+
+            // ******************************************************
+            // Используем исправленный EvaluateAtPoint (см. ниже)
+            // ******************************************************
             bool resultAtPoint = EvaluateAtPoint(expression, x);
 
-            // Оптимизация: для универсального квантора - выходим при первой лжи
             if (evaluationType == QuantifierEvaluationType.Universal)
             {
                 if (!resultAtPoint)
                 {
-                    return false; // Нашли контрпример - высказывание ложно
+                    return false; // Нашли контрпример -> Ложь
                 }
-                foundTrue = true; // Отслеживаем, что нашли хотя бы одну истину
             }
-            // Для экзистенциального квантора - выходим при первой истине
-            else // evaluationType == QuantifierEvaluationType.Existential
+            else // Existential
             {
                 if (resultAtPoint)
                 {
-                    return true; // Нашли пример - высказывание истинно
+                    return true; // Нашли пример -> Истина
                 }
-                foundFalse = true; // Отслеживаем, что нашли ложь
             }
         }
 
-        // Если дошли до конца цикла:
-        if (evaluationType == QuantifierEvaluationType.Universal)
+        // --- 2. Обработка пустого домена и окончательного результата ---
+
+        if (!hasAnyPoint)
         {
-            // Для ∀: если дошли до конца и не нашли контрпримеров - истина
-            // Но проверяем, что домен не был пустым
-            return foundTrue; // Если foundTrue = false, значит домен был пуст
+            // Если цикл не выполнился (пустой домен)
+            if (evaluationType == QuantifierEvaluationType.Universal)
+            {
+                return false; // Соответствует вашему тесту (Assert.False)
+            }
+            else // Existential
+            {
+                return false; // Существует в пустом множестве -> Ложь
+            }
         }
-        else // Existential
-        {
-            // Для ∃: если дошли до конца и не нашли истины - ложь
-            return false;
-        }
+
+        // Если дошли до этого места, значит:
+        // 1. Universal: Все точки проверены, и ни одна не вернула False. -> Истина.
+        // 2. Existential: Все точки проверены, и ни одна не вернула True. -> Ложь.
+
+        return evaluationType == QuantifierEvaluationType.Universal;
     }
 }

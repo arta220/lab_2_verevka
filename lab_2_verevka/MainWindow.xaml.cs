@@ -148,35 +148,35 @@ namespace lab_2_verevka
                     throw new ArgumentException($"Ошибка синтаксиса в формуле: {ncalcEx.Message}");
                 }
 
-                // --- 5. Принятие решения (Логика ПИ) ---
+                // --- 5. Принятие решения: Обработка кванторов (Логика ПИ) ---
 
                 if (hasQuantifiers)
                 {
-                    // Определяем тип квантора
-                    string quantifierType = formula.Trim().ToLower().StartsWith("forall") || formula.Trim().StartsWith("∀")
-                        ? "forall"
-                        : "exists";
-
-                    // Преобразуем в enum для вызова сервиса
-                    var quantifierEnum = quantifierType == "forall"
-                        ? PredicateAnalyzer.QuantifierEvaluationType.Universal
-                        : PredicateAnalyzer.QuantifierEvaluationType.Existential;
+                    // ИСПОЛЬЗУЕМ ПРОГРАММНЫЙ ИНТЕРФЕЙС ДЛЯ ПОЛУЧЕНИЯ ТИПА КВАНТОРА:
+                    PredicateAnalyzer.QuantifierEvaluationType quantifierEnum =
+                        _parserManager.GetQuantifierType(formula);
 
                     // Вычисляем истинность высказывания с квантором
                     bool isTrue = _plotService.EvaluateQuantifiedStatement(predicate, quantifierEnum, min, max, step);
 
-
-                    // Формируем результат
-                    string quantifierName = quantifierType == "forall" ? "∀ (для всех)" : "∃ (существует)";
+                    // Формируем результат, используя полученный тип квантора:
+                    string quantifierSymbol = (quantifierEnum == PredicateAnalyzer.QuantifierEvaluationType.Universal)
+                        ? "∀"
+                        : "∃";
+                    string quantifierName = (quantifierEnum == PredicateAnalyzer.QuantifierEvaluationType.Universal)
+                        ? "∀ (для всех)"
+                        : "∃ (существует)";
                     string truthResult = isTrue ? "ИСТИНА" : "ЛОЖЬ";
 
+                    // Вывод результата
                     ResultBox.Background = isTrue ? Brushes.LightGreen : Brushes.LightPink;
                     ResultBox.Text = $"ВЫСКАЗЫВАНИЕ С КВАНТОРОМ:\n" +
-                                   $"Формула: {formula}\n" +
-                                   $"Квантор: {quantifierName}\n" +
-                                   $"Домен: [{min}, {max}], шаг: {step}\n" +
-                                   $"Результат: {truthResult}\n\n" +
-                                   $"Высказывание {(isTrue ? "истинно" : "ложно")} на заданном домене.";
+                                     $"Формула: {quantifierSymbol}x ({formula})\n" +
+                                     $"Квантор: {quantifierName}\n" +
+                                     $"Домен: [{min:F2}, {max:F2}], шаг: {step:F4}\n" +
+                                     $"Результат: **{truthResult}**\n\n" +
+                                     $"График для высказываний с квантором не строится.";
+
                     return;
                 }
 

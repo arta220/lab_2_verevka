@@ -1,4 +1,5 @@
 ﻿using System;
+using static PredicateAnalyzer;
 
 /// <summary>
 /// Интерфейс для работы с логическими и предикатными выражениями.
@@ -20,5 +21,12 @@ public interface IParserManager
     /// Приводит выражение к синтаксису NCalc, заменяя математические и логические символы Юникода.
     /// </summary>
     string NormalizeToNCalc(string expression);
+
+    /// <summary>
+    /// Определяет тип первого квантора (∀ или ∃) в формуле.
+    /// </summary>
+    QuantifierEvaluationType GetQuantifierType(string expression);
+
+
 }
 

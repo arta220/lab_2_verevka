@@ -1,4 +1,5 @@
 ﻿using System;
+using static PredicateAnalyzer;
 
 /// <summary>
 /// Сервис, предоставляющий доступ к методам класса Parser.
@@ -30,5 +31,24 @@ public class ParserManager : IParserManager
             throw new ArgumentException("Выражение не может быть пустым.", nameof(expression));
 
         return _parser.NormalizeToNCalc(expression);
+    }
+
+    public QuantifierEvaluationType GetQuantifierType(string expression)
+    {
+        string trimmed = expression.Trim().ToLower();
+
+        // Проверка символов (∀) или слов (forall)
+        if (trimmed.StartsWith("∀") || trimmed.StartsWith("forall"))
+        {
+            return QuantifierEvaluationType.Universal;
+        }
+        // Проверка символов (∃) или слов (exists)
+        else if (trimmed.StartsWith("∃") || trimmed.StartsWith("exists"))
+        {
+            return QuantifierEvaluationType.Existential;
+        }
+
+        // TODO: затычка, потом мб поменять
+        return QuantifierEvaluationType.Existential;
     }
 }
