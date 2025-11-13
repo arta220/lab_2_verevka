@@ -149,64 +149,64 @@ public class PredicateAnalyzer
         Existential
     }
 
-    public bool EvaluateQuantifiedStatement(
-        Predicate predicate,
-        QuantifierEvaluationType evaluationType,
-        double min,
-        double max,
-        double step)
+public bool EvaluateQuantifiedStatement(
+    Predicate predicate,
+    QuantifierEvaluationType evaluationType,
+    double min,
+    double max,
+    double step)
+{
+    if (predicate == null)
+        throw new ArgumentNullException(nameof(predicate));
+
+    var expression = predicate._NCalcExpression;
+    bool hasAnyPoint = false; // Флаг для отслеживания, был ли домен непустым
+    
+    // --- 1. Основной цикл ---
+    for (double x = min; x <= max + (step / 2.0); x += step)
     {
-        if (predicate == null)
-            throw new ArgumentNullException(nameof(predicate));
+        hasAnyPoint = true; // Домен не пуст!
+        
+        // ******************************************************
+        // Используем исправленный EvaluateAtPoint (см. ниже)
+        // ******************************************************
+        bool resultAtPoint = EvaluateAtPoint(expression, x);
 
-        var expression = predicate._NCalcExpression;
-        bool hasAnyPoint = false; // Флаг для отслеживания, был ли домен непустым
-
-        // --- 1. Основной цикл ---
-        for (double x = min; x <= max + (step / 2.0); x += step)
+        if (evaluationType == QuantifierEvaluationType.Universal)
         {
-            hasAnyPoint = true; // Домен не пуст!
-
-            // ******************************************************
-            // Используем исправленный EvaluateAtPoint (см. ниже)
-            // ******************************************************
-            bool resultAtPoint = EvaluateAtPoint(expression, x);
-
-            if (evaluationType == QuantifierEvaluationType.Universal)
+            if (!resultAtPoint)
             {
-                if (!resultAtPoint)
-                {
-                    return false; // Нашли контрпример -> Ложь
-                }
-            }
-            else // Existential
-            {
-                if (resultAtPoint)
-                {
-                    return true; // Нашли пример -> Истина
-                }
+                return false; // Нашли контрпример -> Ложь
             }
         }
-
-        // --- 2. Обработка пустого домена и окончательного результата ---
-
-        if (!hasAnyPoint)
+        else // Existential
         {
-            // Если цикл не выполнился (пустой домен)
-            if (evaluationType == QuantifierEvaluationType.Universal)
+            if (resultAtPoint)
             {
-                return false; // Соответствует вашему тесту (Assert.False)
-            }
-            else // Existential
-            {
-                return false; // Существует в пустом множестве -> Ложь
+                return true; // Нашли пример -> Истина
             }
         }
-
-        // Если дошли до этого места, значит:
-        // 1. Universal: Все точки проверены, и ни одна не вернула False. -> Истина.
-        // 2. Existential: Все точки проверены, и ни одна не вернула True. -> Ложь.
-
-        return evaluationType == QuantifierEvaluationType.Universal;
     }
+    
+    // --- 2. Обработка пустого домена и окончательного результата ---
+    
+    if (!hasAnyPoint)
+    {
+        // Если цикл не выполнился (пустой домен)
+        if (evaluationType == QuantifierEvaluationType.Universal)
+        {
+            return false; // Соответствует вашему тесту (Assert.False)
+        }
+        else // Existential
+        {
+            return false; // Существует в пустом множестве -> Ложь
+        }
+    }
+    
+    // Если дошли до этого места, значит:
+    // 1. Universal: Все точки проверены, и ни одна не вернула False. -> Истина.
+    // 2. Existential: Все точки проверены, и ни одна не вернула True. -> Ложь.
+    
+    return evaluationType == QuantifierEvaluationType.Universal;
+}
 }

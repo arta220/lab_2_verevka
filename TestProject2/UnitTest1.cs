@@ -43,21 +43,33 @@ public class PredicateLogicTests
 
                 Xunit.Assert.True(result);
             }
-
-            [Fact(DisplayName = "PredicateAnalyzer: корректно определяет область истинности простого предиката (x > 0)")]
-            public void CalculateTruthSet_ShouldReturnCorrectSegments_ForSimplePredicate()
+            [Fact(DisplayName = "PredicateAnalyzer: корректно определяет область истинности предиката y>=5 и y<=15")]
+            public void CalculateTruthSet_ShouldReturnCorrectSegments_ForCompoundPredicate_Y()
             {
                 var analyzer = new PredicateAnalyzer();
-                var expr = new NCalc.Expression("x > 0");
-                // isQuantified = false
+
+                var expr = new NCalc.Expression("y>=5 and y<=15");
+
+
                 var predicate = new Predicate(expr, false);
 
-                // Домен [-2, -1, 0, 1, 2]. Истина при x=1, x=2.
-                List<TruthSegment> result = analyzer.CalculateTruthSet(predicate, -2, 2, 1);
 
+                double min = -10;
+                double max = 20;
+                double step = 1;
+
+                List<TruthSegment> result = analyzer.CalculateTruthSet(predicate, min, max, step);
+
+                // 3. ПРОВЕРКИ (ASSERT)
+
+                // Ожидаем ОДИН сегмент истинности, т.к. все точки с 5 по 15 непрерывны.
                 Xunit.Assert.Single(result);
-                Xunit.Assert.Equal(1, result[0].Start);
-                Xunit.Assert.Equal(2, result[0].End);
+
+                // Начало сегмента должно быть первой истинной точкой: 5
+                Xunit.Assert.Equal(5, result[0].Start);
+
+                // Конец сегмента должен быть последней истинной точкой: 15
+                Xunit.Assert.Equal(15, result[0].End);
             }
 
             [Fact(DisplayName = "PredicateAnalyzer: определяет тип предиката как Satisfiable")]
