@@ -249,7 +249,7 @@ namespace TestProject2
                 // 3. Создание предиката
                 // NCalcExpression в Predicate создается из ncalcText
                 var ncalcExpr = new NCalc.Expression(ncalcText);
-                var predicate = new Predicate(ncalcExpr, hasQuantifiers);
+                var predicate = new Predicate(ncalcExpr, hasQuantifiers,"x");
 
     
                     // ИСПОЛЬЗУЕМ ПРОГРАММНЫЙ ИНТЕРФЕЙС ДЛЯ ПОЛУЧЕНИЯ ТИПА КВАНТОРА:
