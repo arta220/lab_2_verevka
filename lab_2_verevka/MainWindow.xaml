@@ -6,118 +6,283 @@
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="Логический калькулятор"
-        Height="720" Width="1100"
-        Background="#f5f6fa"
+        Height="720"
+        Width="1100"
         WindowStartupLocation="CenterScreen">
-
-    <TabControl FontSize="14" Margin="10">
+    <TabControl FontSize="14"
+                Margin="10">
+        <TabControl.Background>
+            <ImageBrush ImageSource="/Interface;component/image.png" />
+        </TabControl.Background>
         <TabItem Header="Логический калькулятор">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="5"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="0,0,0,5">
+                <Grid Grid.Row="0"
+                      Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <GroupBox Grid.Column="0" Header="Редактор формул" FontWeight="Bold" FontSize="14" Margin="0,0,10,0">
+                    <GroupBox Grid.Column="0"
+                              Foreground="White"
+                              Header="Редактор формул"
+                              FontWeight="Bold"
+                              FontSize="14"
+                              Margin="0,0,10,0">
                         <TextBox x:Name="FormulaInput"
                                  AcceptsReturn="True"
                                  TextWrapping="Wrap"
                                  VerticalScrollBarVisibility="Auto"
                                  FontSize="16"
                                  Padding="10"
-                                 Height="80"/>
+                                 Height="80" />
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1" Header="Операторы" FontWeight="Bold" FontSize="14">
-                        <StackPanel Orientation="Vertical" Width="300">
-                            <TextBlock Text="Логические операторы:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <GroupBox Grid.Column="1"
+                              Header="Операторы"
+                              FontWeight="Bold"
+                              Foreground="White"
+                              FontSize="14">
+                        <StackPanel Orientation="Vertical"
+                                    Width="300">
+                            <TextBlock Text="Логические операторы:"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,5" />
                             <WrapPanel>
-                                <Button x:Name="AndButton" Content="∧" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="OrButton" Content="∨" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="NotButton" Content="¬" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="ImplButton" Content="→" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="EqvButton" Content="↔" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="ForallButton" Content="∀" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="ExistsButton" Content="∃" FontSize="20" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="AndButton"
+                                        Content="∧"
+                                        FontSize="20"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="OrButton"
+                                        Content="∨"
+                                        FontSize="20"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="NotButton"
+                                        Content="¬"
+                                        FontSize="20"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="ImplButton"
+                                        Content="→"
+                                        FontSize="20"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="EqvButton"
+                                        Content="↔"
+                                        FontSize="20"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="ForallButton"
+                                        Content="∀"
+                                        FontSize="20"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="ExistsButton"
+                                        Content="∃"
+                                        FontSize="20"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
                             </WrapPanel>
 
-                            <TextBlock Text="Операторы сравнения:" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                            <TextBlock Text="Операторы сравнения:"
+                                       FontWeight="SemiBold"
+                                       Margin="0,10,0,5" />
                             <WrapPanel>
-                                <Button x:Name="EqualButton" Content="==" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="NotEqualButton" Content="≠" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="LessButton" Content="&lt;" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="GreaterButton" Content="&gt;" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="LessEqualButton" Content="≤" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
-                                <Button x:Name="GreaterEqualButton" Content="≥" FontSize="16" Width="40" Height="35" Margin="2" Click="InsertSymbol_Click"/>
+                                <Button x:Name="EqualButton"
+                                        Content="=="
+                                        FontSize="16"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="NotEqualButton"
+                                        Content="≠"
+                                        FontSize="16"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="LessButton"
+                                        Content="&lt;"
+                                        FontSize="16"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="GreaterButton"
+                                        Content="&gt;"
+                                        FontSize="16"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="LessEqualButton"
+                                        Content="≤"
+                                        FontSize="16"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
+                                <Button x:Name="GreaterEqualButton"
+                                        Content="≥"
+                                        FontSize="16"
+                                        Width="40"
+                                        Height="35"
+                                        Margin="2"
+                                        Click="InsertSymbol_Click" />
                             </WrapPanel>
 
-                            <Button x:Name="BuildGraphButton" Content="Построить график истинности" 
-                                    FontSize="14" Margin="0,15,0,0" Padding="10,5" Height="35"
-                                    Background="#4CAF50" Foreground="White" FontWeight="Bold"
-                                    Click="BuildGraphButton_Click"/>
+                            <Button x:Name="BuildGraphButton"
+                                    Content="Построить график истинности"
+                                    FontSize="14"
+                                    Margin="0,15,0,0"
+                                    Padding="10,5"
+                                    Height="35"
+                                    Background="#4CAF50"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Click="BuildGraphButton_Click" />
                         </StackPanel>
                     </GroupBox>
                 </Grid>
 
-                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="LightGray" ShowsPreview="True"/>
+                <GridSplitter Grid.Row="1"
+                              Height="5"
+                              HorizontalAlignment="Stretch"
+                              Background="LightGray"
+                              ShowsPreview="True" />
 
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <GroupBox Grid.Column="0" Header="Область определения" FontWeight="Bold" FontSize="14">
-                        <StackPanel Orientation="Vertical" Margin="0,5">
-                            <StackPanel Orientation="Horizontal" Margin="10,5">
-                                <TextBlock Text="Min:" VerticalAlignment="Center" Width="30"/>
-                                <TextBox x:Name="MinInput" Width="60" Margin="5" FontSize="14"/>
-                                <TextBlock Text="Max:" VerticalAlignment="Center" Width="30"/>
-                                <TextBox x:Name="MaxInput" Width="60" Margin="5" FontSize="14"/>
-                                <TextBlock Text="Step:" VerticalAlignment="Center" Width="35"/>
-                                <TextBox x:Name="StepInput" Width="60" Margin="5" FontSize="14"/>
+                    <GroupBox Grid.Column="0"
+                              Foreground="White"
+                              Header="Область определения"
+                              FontWeight="Bold"
+                              FontSize="14">
+                        <StackPanel Orientation="Vertical"
+                                    Margin="0,5">
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,5">
+                                <TextBlock Text="Min:"
+                                           VerticalAlignment="Center"
+                                           Width="30" />
+                                <TextBox x:Name="MinInput"
+                                         Width="60"
+                                         Margin="5"
+                                         FontSize="14" />
+                                <TextBlock Text="Max:"
+                                           VerticalAlignment="Center"
+                                           Width="30" />
+                                <TextBox x:Name="MaxInput"
+                                         Width="60"
+                                         Margin="5"
+                                         FontSize="14" />
+                                <TextBlock Text="Step:"
+                                           VerticalAlignment="Center"
+                                           Width="35" />
+                                <TextBox x:Name="StepInput"
+                                         Width="60"
+                                         Margin="5"
+                                         FontSize="14" />
                             </StackPanel>
 
-                            <Button x:Name="ApplyDomainButton" Content="Применить область" 
-                                    Width="150" Margin="0,10,0,10" Padding="5" FontSize="14"
-                                    Background="#2196F3" Foreground="White"
-                                    Click="ApplyDomainButton_Click"/>
+                            <Button x:Name="ApplyDomainButton"
+                                    Content="Применить область"
+                                    Width="150"
+                                    Margin="0,10,0,10"
+                                    Padding="5"
+                                    FontSize="14"
+                                    Background="#2196F3"
+                                    Foreground="White"
+                                    Click="ApplyDomainButton_Click" />
 
-                            <GroupBox Header="Текущая область" FontWeight="Bold" FontSize="12" Margin="0,10,0,0">
-                                <ListBox x:Name="DomainValuesList" FontSize="12"/>
+                            <GroupBox Header="Текущая область"
+                                      FontWeight="Bold"
+                                      FontSize="12"
+                                      Margin="0,10,0,0">
+                                <ListBox x:Name="DomainValuesList"
+                                         FontSize="12" />
                             </GroupBox>
                         </StackPanel>
                     </GroupBox>
 
-                    <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" Background="LightGray" ShowsPreview="True" HorizontalAlignment="Center"/>
+                    <GridSplitter Grid.Column="1"
+                                  Width="5"
+                                  VerticalAlignment="Stretch"
+                                  Background="LightGray"
+                                  ShowsPreview="True"
+                                  HorizontalAlignment="Center" />
 
-                    <GroupBox Grid.Column="2" Header="Результаты и график" FontWeight="Bold" FontSize="14">
+                    <GroupBox Grid.Column="2"
+                              Foreground="White"
+                              Header="Результаты и график"
+                              FontWeight="Bold"
+                              FontSize="14">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="0,0,0,10">
-                                <oxy:PlotView x:Name="TruthPlotView" Model="{Binding PlotModel}" />
+                            <Border Grid.Row="0"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1"
+                                    Margin="0,0,0,10">
+                                <oxy:PlotView x:Name="TruthPlotView"
+                                              Model="{Binding PlotModel}" />
                             </Border>
 
-                            <StackPanel Grid.Row="1" Orientation="Vertical">
-                                <TextBlock Text="Результаты:" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,5"/>
-                                <TextBox x:Name="ResultBox" Height="80" TextWrapping="Wrap"
-                                         VerticalScrollBarVisibility="Auto" FontSize="12"
-                                         IsReadOnly="True" Padding="5"/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                                    <Button Content="Экспортировать график" Margin="5" Padding="8,3" FontSize="12"/>
-                                    <Button Content="Очистить результаты" Margin="5" Padding="8,3" FontSize="12"/>
+                            <StackPanel Grid.Row="1"
+                                        Orientation="Vertical">
+                                <TextBlock Text="Результаты:"
+                                           FontWeight="SemiBold"
+                                           FontSize="14"
+                                           Margin="0,0,0,5" />
+                                <TextBox x:Name="ResultBox"
+                                         Height="80"
+                                         TextWrapping="Wrap"
+                                         VerticalScrollBarVisibility="Auto"
+                                         FontSize="12"
+                                         IsReadOnly="True"
+                                         Padding="5" />
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            Margin="0,10,0,0">
+                                    <Button Content="Экспортировать график"
+                                            Margin="5"
+                                            Padding="8,3"
+                                            FontSize="12" />
+                                    <Button Content="Очистить результаты"
+                                            Margin="5"
+                                            Padding="8,3"
+                                            FontSize="12" />
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
@@ -129,10 +294,15 @@
         <TabItem Header="Справка">
             <ScrollViewer Margin="10">
                 <StackPanel>
-                    <TextBlock Text="Руководство пользователя" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="Руководство пользователя"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10" />
                     <TextBlock TextWrapping="Wrap">
                     </TextBlock>
-                    <TextBlock Text="Поддерживаемые операции:" FontWeight="Bold" Margin="0,10,0,5"/>
+                    <TextBlock Text="Поддерживаемые операции:"
+                               FontWeight="Bold"
+                               Margin="0,10,0,5" />
                     <TextBlock Text="¬ — отрицание (NOT)" />
                     <TextBlock Text="∧ — конъюнкция (AND)" />
                     <TextBlock Text="∨ — дизъюнкция (OR)" />
@@ -140,7 +310,9 @@
                     <TextBlock Text="↔ — эквивалентность" />
                     <TextBlock Text="∀ — квантор общности (игнорируется в текущем анализе)" />
                     <TextBlock Text="∃ — квантор существования (игнорируется в текущем анализе)" />
-                    <TextBlock Text="Новые операторы сравнения:" FontWeight="Bold" Margin="0,10,0,5"/>
+                    <TextBlock Text="Новые операторы сравнения:"
+                               FontWeight="Bold"
+                               Margin="0,10,0,5" />
                     <TextBlock Text="= — равно" />
                     <TextBlock Text="≠ — не равно" />
                     <TextBlock Text="&lt; — меньше" />
