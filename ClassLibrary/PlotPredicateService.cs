@@ -40,4 +40,11 @@ public class PlotPredicateService : IPlotPredicateService
 
         return _plotGenerator.Create1DPlot(segments, min, max);
     }
+    public bool EvaluateQuantifiedStatement(Predicate predicate, PredicateAnalyzer.QuantifierEvaluationType type, double min, double max, double step)
+    {
+        if (predicate == null)
+            throw new ArgumentNullException(nameof(predicate));
+
+        return _analyzer.EvaluateQuantifiedStatement(predicate, type, min, max, step);
+    }
 }

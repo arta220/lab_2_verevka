@@ -21,3 +21,4 @@ public interface IParserManager
     /// </summary>
     string NormalizeToNCalc(string expression);
 }
+

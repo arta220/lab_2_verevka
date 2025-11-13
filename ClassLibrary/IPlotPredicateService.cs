@@ -20,4 +20,9 @@ public interface IPlotPredicateService
     /// Создает график OxyPlot на основе отрезков истинности.
     /// </summary>
     PlotModel Generate1DPlot(List<TruthSegment> segments, double min, double max);
+
+    /// <summary>
+    /// Вычисляет истинность высказывания с квантором на дискретном домене.
+    /// </summary>
+    bool EvaluateQuantifiedStatement(Predicate predicate, PredicateAnalyzer.QuantifierEvaluationType type, double min, double max, double step);
 }

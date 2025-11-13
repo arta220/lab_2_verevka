@@ -7,12 +7,7 @@
 public class ParserManager : IParserManager
 {
     private readonly Parser _parser;
-
-    public ParserManager(Parser parser)
-    {
-        _parser = parser ?? throw new ArgumentNullException(nameof(parser));
-    }
-
+    public ParserManager(Parser parser) => _parser = parser;
     public bool IsPredicate(string expression)
     {
         if (string.IsNullOrWhiteSpace(expression))

@@ -21,7 +21,6 @@ public class PredicateAnalyzer
 
     private bool EvaluateAtPoint(Expression expression, double x)
     {
-        // (Предполагаем, что 1D предикаты используют 'x')
         expression.Parameters["x"] = x;
         try
         {
@@ -45,7 +44,7 @@ public class PredicateAnalyzer
 
         for (double x = min; x <= max; x += step)
         {
-            // ИСПРАВЛЕНО: Теперь EvaluateAtPoint принимает NCalc.Expression
+
             if (EvaluateAtPoint(predicate._NCalcExpression, x))
                 hasFoundTrue = true;
             else
@@ -109,5 +108,82 @@ public class PredicateAnalyzer
         }
 
         return segments;
+    }
+    /// <summary>
+    //  Enum для указания типа вычисления квантора.
+    /// </summary>
+    public enum QuantifierEvaluationType
+    {
+        /// <summary>
+        /// Универсальный (Для всех - ∀). Требует, чтобы все точки были Истинны.
+        /// </summary>
+        Universal,
+        /// <summary>
+        /// Экзистенциальный (Существует - ∃). Требует, чтобы хотя бы одна точка была Истинна.
+        /// </summary>
+        Existential
+    }
+
+    /// <summary>
+    /// Вычисляет истинность (True/False) высказывания с квантором на заданном домене.
+    /// </summary>
+    /// <param name="predicate">Объект предиката (содержащий P(x)).</param>
+    /// <param name="evaluationType">Тип квантора (∀ или ∃), который должен применить ПИ.</param>
+    /// <param name="min">Минимум домена.</param>
+    /// <param name="max">Максимум домена.</param>
+    /// <param name="step">Шаг домена.</param>
+    /// <returns>True или False.</returns>
+    public bool EvaluateQuantifiedStatement(
+        Predicate predicate,
+        QuantifierEvaluationType evaluationType,
+        double min,
+        double max,
+        double step)
+    {
+        if (predicate == null)
+            throw new ArgumentNullException(nameof(predicate));
+
+        var expression = predicate._NCalcExpression;
+
+        bool foundTrue = false;
+        bool foundFalse = false;
+
+        // Обрабатываем все точки домена
+        for (double x = min; x <= max + (step / 2.0); x += step) // +step/2 для учета погрешности округления
+        {
+            bool resultAtPoint = EvaluateAtPoint(expression, x);
+
+            // Оптимизация: для универсального квантора - выходим при первой лжи
+            if (evaluationType == QuantifierEvaluationType.Universal)
+            {
+                if (!resultAtPoint)
+                {
+                    return false; // Нашли контрпример - высказывание ложно
+                }
+                foundTrue = true; // Отслеживаем, что нашли хотя бы одну истину
+            }
+            // Для экзистенциального квантора - выходим при первой истине
+            else // evaluationType == QuantifierEvaluationType.Existential
+            {
+                if (resultAtPoint)
+                {
+                    return true; // Нашли пример - высказывание истинно
+                }
+                foundFalse = true; // Отслеживаем, что нашли ложь
+            }
+        }
+
+        // Если дошли до конца цикла:
+        if (evaluationType == QuantifierEvaluationType.Universal)
+        {
+            // Для ∀: если дошли до конца и не нашли контрпримеров - истина
+            // Но проверяем, что домен не был пустым
+            return foundTrue; // Если foundTrue = false, значит домен был пуст
+        }
+        else // Existential
+        {
+            // Для ∃: если дошли до конца и не нашли истины - ложь
+            return false;
+        }
     }
 }
