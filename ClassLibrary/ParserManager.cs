@@ -24,7 +24,15 @@ public class ParserManager : IParserManager
         if (string.IsNullOrWhiteSpace(expression))
             throw new ArgumentException("Выражение не может быть пустым.", nameof(expression));
 
-        return _parser.DetectQuantifiers(expression);
+        int count = _parser.CountQuantifiers(expression);
+
+        if (count > 1)
+        {
+            throw new ArgumentException("В выражении должен быть ровно 1 квантор.");
+        }
+
+        // Если count == 0 или count == 1
+        return count == 1;
     }
 
     public string NormalizeToNCalc(string expression)

@@ -250,11 +250,12 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-
                             <Border Grid.Row="0"
-                                    Margin="0,0,0,10">
+                Margin="0,0,0,10">
                                 <oxy:PlotView x:Name="TruthPlotView"
-                                              Model="{Binding PlotModel}" />
+                          Model="{Binding PlotModel}"
+                          Background="White"
+                          Foreground="Black" />
                             </Border>
 
                             <StackPanel Grid.Row="1"
@@ -291,32 +292,51 @@
 
         <TabItem Header="Справка">
             <ScrollViewer Margin="10">
-                <StackPanel>
+                <StackPanel Margin="0, 10, 0, 0">
                     <TextBlock Text="Руководство пользователя"
-                               FontSize="20"
-                               FontWeight="Bold"
-                               Margin="0,0,0,10" />
-                    <TextBlock TextWrapping="Wrap">
-                    </TextBlock>
-                    <TextBlock Text="Поддерживаемые операции:"
-                               FontWeight="Bold"
-                               Margin="0,10,0,5" />
-                    <TextBlock Text="¬ — отрицание (NOT)" />
-                    <TextBlock Text="∧ — конъюнкция (AND)" />
-                    <TextBlock Text="∨ — дизъюнкция (OR)" />
-                    <TextBlock Text="→ — импликация" />
-                    <TextBlock Text="↔ — эквивалентность" />
-                    <TextBlock Text="∀ — квантор общности (игнорируется в текущем анализе)" />
-                    <TextBlock Text="∃ — квантор существования (игнорируется в текущем анализе)" />
-                    <TextBlock Text="Новые операторы сравнения:"
-                               FontWeight="Bold"
-                               Margin="0,10,0,5" />
-                    <TextBlock Text="= — равно" />
-                    <TextBlock Text="≠ — не равно" />
-                    <TextBlock Text="&lt; — меньше" />
-                    <TextBlock Text="&gt; — больше" />
-                    <TextBlock Text="≤ — меньше или равно" />
-                    <TextBlock Text="≥ — больше или равно" />
+        FontSize="20"
+        FontWeight="Bold"
+        Margin="0,0,0,10"
+        Foreground="White" />
+
+                    <TextBlock Text="Синтаксис и правила ввода:"
+        FontWeight="Bold"
+        Margin="0,0,0,5"
+        Foreground="White" />
+
+                    <TextBlock Text="Пример предиката: x > 5"
+        Margin="0,0,0,2"
+        Foreground="White" />
+                    <TextBlock Text="Для выражения с квантором, вводить строку вида: ∃ x ( x > 5)"
+        Margin="0,0,0,2"
+        Foreground="White" />
+                    <TextBlock Text="Внимание: В введенной строке для анализа может быть лишь 1 квантор."
+        FontWeight="SemiBold"
+        Margin="0,0,0,15"
+        Foreground="White" />
+
+                    <TextBlock Text="Поддерживаемые логические операции:"
+        FontWeight="Bold"
+        Margin="0,10,0,5"
+        Foreground="White" />
+                    <TextBlock Text="¬ — отрицание (NOT)" Foreground="White" />
+                    <TextBlock Text="∧ — конъюнкция (AND)" Foreground="White" />
+                    <TextBlock Text="∨ — дизъюнкция (OR)" Foreground="White" />
+                    <TextBlock Text="→ — импликация" Foreground="White" />
+                    <TextBlock Text="↔ — эквивалентность" Foreground="White" />
+                    <TextBlock Text="∀ — квантор общности (игнорируется в текущем анализе, если стоит более одного)" Foreground="White" />
+                    <TextBlock Text="∃ — квантор существования (игнорируется в текущем анализе, если стоит более одного)" Foreground="White" />
+
+                    <TextBlock Text="Операторы сравнения:"
+        FontWeight="Bold"
+        Margin="0,10,0,5"
+        Foreground="White" />
+                    <TextBlock Text="= — равно" Foreground="White" />
+                    <TextBlock Text="≠ — не равно" Foreground="White" />
+                    <TextBlock Text="&lt; — меньше" Foreground="White" />
+                    <TextBlock Text="&gt; — больше" Foreground="White" />
+                    <TextBlock Text="≤ — меньше или равно" Foreground="White" />
+                    <TextBlock Text="≥ — больше или равно" Foreground="White" />
                 </StackPanel>
             </ScrollViewer>
         </TabItem>

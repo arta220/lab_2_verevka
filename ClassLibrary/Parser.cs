@@ -12,6 +12,16 @@ public class Parser
         @"^\s*(∀|∃|forall|exists)\s*([a-zA-Z]+)";
 
     /// <summary>
+    /// Подсчитывает общее количество кванторов (∀, ∃, forall, exists) в выражении.
+    /// </summary>
+    public int CountQuantifiers(string expression)
+    {
+        // Используем новый паттерн для поиска всех вхождений
+        var matches = Regex.Matches(expression, quantifierPattern, RegexOptions.IgnoreCase);
+        return matches.Count;
+    }
+
+    /// <summary>
     /// Проверяет, является ли введённая строка предикатом 
     /// (наличие операторов сравнения И переменных).
     /// </summary>
