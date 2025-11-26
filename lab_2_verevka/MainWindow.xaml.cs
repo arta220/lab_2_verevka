@@ -121,7 +121,6 @@ namespace lab_2_verevka
                 if (step <= 0) throw new ArgumentException("Шаг (Step) должен быть > 0.");
                 if (min >= max) throw new ArgumentException("Min должен быть меньше Max.");
 
-                // --- 3. Вызов Сервиса Парсера (ПИ 1) ---
 
                 // Проверка, является ли это предикатом
                 if (!_parserManager.IsPredicate(formula))
