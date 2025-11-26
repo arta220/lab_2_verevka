@@ -3,6 +3,10 @@ using NCalc;
 
 public class Parser
 {
+
+    // TODO: допилить:
+    //валидацию случая, когда  отрицание ставится перед переменной. скорее всего просто буду выкидывать ошибку с доп методом в парсере
+    //метод для проверки предиката по шаблону
     private static readonly string comparisonPattern = @"(<=|>=|==|!=|<|>|≠|≤|≥)"; // Для IsPredicate
     private static readonly string variablePattern = @"[a-zA-Z]+"; // Для IsPredicate
     private static readonly string quantifierPattern = @"(∀|∃)"; // Для DetectQuantifiers
