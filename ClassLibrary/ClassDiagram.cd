@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Parser" Collapsed="true">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAQAAAAAAAIQAAAAAEAAAgAQAAAgAAAAAQAA=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ParserManager" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAoAAAAAAEAEAAAAAAABAAAAAQAA=</HashCode>
+      <FileName>ParserManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PlotGenerator" Collapsed="true">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlotGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlotPredicateService" Collapsed="true">
+    <Position X="6" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAIAAAEAAAAAAIAAAAAAAAAAAAAAQAACAAA=</HashCode>
+      <FileName>PlotPredicateService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Predicate" Collapsed="true">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAEAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Predicate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TruthSegment" Collapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PredicateAnalyzer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PredicateAnalyzer" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAEAAAAAQAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PredicateAnalyzer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="IParserManager" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAoAAAAAAEAAAAAAAAABAAAAAQAA=</HashCode>
+      <FileName>IParseManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPlotPredicateService" Collapsed="true">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAEAAAAAAIAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>IPlotPredicateService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
