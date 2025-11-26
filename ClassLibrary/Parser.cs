@@ -7,7 +7,7 @@ public class Parser
     private static readonly string variablePattern = @"[a-zA-Z]+"; // Для IsPredicate
     private static readonly string quantifierPattern = @"(∀|∃)"; // Для DetectQuantifiers
 
-    // ПАТТЕРН ДЛЯ ПОИСКА ПЕРЕМЕННОЙ ПОСЛЕ КВАНТОРА: ^(опц. пробелы)(КВАНТОР)(опц. пробелы)(ПЕРЕМЕННАЯ - ГРУППА 2)
+    // ПАТТЕРН ДЛЯ ПОИСКА ПЕРЕМЕННОЙ ПОСЛЕ КВАНТОРА: ^(пробелы)(КВАНТОР)(probeli)(ПЕРЕМЕННАЯ - ГРУППА 2)
     private static readonly string quantifierVariablePattern =
         @"^\s*(∀|∃|forall|exists)\s*([a-zA-Z]+)";
 
@@ -30,10 +30,10 @@ public class Parser
     }
 
     /// <summary>
-    /// Извлекает имя переменной, связанной квантором (например, 'x' из '∀x (x>0)').
+    /// Извлекает имя переменной, связанной квантором 
     /// </summary>
     /// <param name="expression">Исходное выражение.</param>
-    /// <returns>Имя переменной (напр., "x") или первая переменная в предикате.</returns>
+    /// <returns>Имя переменной или первая переменная в предикате .</returns>
     public string ExtractQuantifierVariable(string expression)
     {
         var match = Regex.Match(expression, quantifierVariablePattern, RegexOptions.IgnoreCase);

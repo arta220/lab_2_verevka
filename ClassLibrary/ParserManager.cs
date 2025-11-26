@@ -5,7 +5,7 @@ using static PredicateAnalyzer;
 /// Сервис, предоставляющий доступ к методам класса Parser.
 /// При ошибках выбрасывает исключения наверх, без обработки в консоли.
 /// </summary>
-public class ParserManager : IParserManager // Предполагаю, что IParserManager должен быть обновлен, если он существует.
+public class ParserManager : IParserManager 
 {
     private readonly Parser _parser;
     public ParserManager(Parser parser) => _parser = parser;

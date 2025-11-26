@@ -242,7 +242,7 @@
 
                     <GroupBox Grid.Column="2"
                               Foreground="White"
-                              Header="Результаты и график"
+                              Header="График"
                               FontWeight="Bold"
                               FontSize="14">
                         <Grid>
@@ -252,8 +252,6 @@
                             </Grid.RowDefinitions>
 
                             <Border Grid.Row="0"
-                                    BorderBrush="LightGray"
-                                    BorderThickness="1"
                                     Margin="0,0,0,10">
                                 <oxy:PlotView x:Name="TruthPlotView"
                                               Model="{Binding PlotModel}" />

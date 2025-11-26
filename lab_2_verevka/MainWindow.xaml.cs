@@ -35,11 +35,10 @@ namespace lab_2_verevka
             this.DataContext = this;
 
             // Инициализация пустой модели графика
-            PlotModel = new PlotModel { Title = "График истинности (пусто)" };
+            PlotModel = new PlotModel {};
             TruthPlotView.Model = PlotModel;
         }
 
-        // --- Обработчики кнопок ---
 
         /// <summary>
         /// Обработчик для кнопки "Применить область".
@@ -60,7 +59,7 @@ namespace lab_2_verevka
                     throw new ArgumentException("Min, Max и Step должны быть числовыми значениями.");
                 }
 
-                if (step <= 0) throw new ArgumentException("Шаг (Step) должен быть > 0.");
+                if (step <= 0) throw new ArgumentException("Шаг должен быть > 0.");
                 if (min >= max) throw new ArgumentException("Min должен быть меньше Max.");
 
                 // Заполнение ListBox
@@ -70,8 +69,8 @@ namespace lab_2_verevka
                     // Ограничиваем количество, чтобы не зависнуть
                     if (DomainValuesList.Items.Count > 1000)
                     {
-                        DomainValuesList.Items.Add("... (Слишком много точек)");
-                        break;
+                        DomainValuesList.Items.Add("... (Слишком много точек)"); // todo: че?
+                        break; 
                     }
                 }
 
@@ -96,7 +95,7 @@ namespace lab_2_verevka
         /// </summary>
         private void BuildGraphButton_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Очистка предыдущих результатов
+            // Очистка предыдущих результатов
             ResultBox.Text = "";
             ResultBox.Background = Brushes.White;
             PlotModel = new PlotModel(); // Очистка графика
@@ -104,7 +103,7 @@ namespace lab_2_verevka
 
             try
             {
-                // --- 2. Сбор и Валидация Ввода (Уровень ПИ/View) ---
+                // Сбор и Валидация Ввода 
                 string formula = FormulaInput.Text;
 
                 if (string.IsNullOrWhiteSpace(formula))
@@ -141,14 +140,13 @@ namespace lab_2_verevka
                     throw new ArgumentException("Не удалось определить имя переменной в предикате. Проверьте синтаксис.");
                 }
 
-                // --- 4. Создание предиката (общая часть) ---
 
                 // Создание объекта Predicate
                 Predicate predicate;
                 try
                 {
                     var ncalcExpr = new NCalc.Expression(ncalcText);
-                    // !!! ИЗМЕНЕНИЕ: Используем новый конструктор Predicate !!!
+
                     predicate = new Predicate(ncalcExpr, hasQuantifiers, variableName);
                 }
                 catch (Exception ncalcEx)
@@ -157,7 +155,7 @@ namespace lab_2_verevka
                     throw new ArgumentException($"Ошибка синтаксиса в формуле: {ncalcEx.Message}");
                 }
 
-                // --- 5. Принятие решения: Обработка кванторов (Логика ПИ) ---
+                // Принятие решения: Обработка кванторов 
 
                 if (hasQuantifiers)
                 {
@@ -168,10 +166,6 @@ namespace lab_2_verevka
                     // Вычисляем истинность высказывания с квантором
                     bool isTrue = _plotService.EvaluateQuantifiedStatement(predicate, quantifierEnum, min, max, step);
 
-                    // Формируем результат, используя полученный тип квантора:
-                    string quantifierSymbol = (quantifierEnum == PredicateAnalyzer.QuantifierEvaluationType.Universal)
-                        ? "∀"
-                        : "∃";
                     string quantifierName = (quantifierEnum == PredicateAnalyzer.QuantifierEvaluationType.Universal)
                         ? "∀ (для всех)"
                         : "∃ (существует)";
@@ -180,7 +174,7 @@ namespace lab_2_verevka
                     // Вывод результата
                     ResultBox.Background = isTrue ? Brushes.LightGreen : Brushes.LightPink;
                     ResultBox.Text = $"ВЫСКАЗЫВАНИЕ С КВАНТОРОМ:\n" +
-                                        $"Формула: {quantifierSymbol}{variableName} ({formula})\n" + // !!! ДОБАВЛЕНО: вывод имени переменной !!!
+                                        $"Формула: {formula}\n" + 
                                         $"Квантор: {quantifierName}\n" +
                                         $"Домен: [{min:F2}, {max:F2}], шаг: {step:F4}\n" +
                                         $"Результат: **{truthResult}**\n\n" +
@@ -189,7 +183,7 @@ namespace lab_2_verevka
                     return;
                 }
 
-                // --- 6. Обработка обычных предикатов (ПИ 2) ---
+                // Обработка обычных предикатов
 
                 // Вызов анализатора
                 var type = _plotService.GetPredicateType(predicate, min, max, step);
@@ -201,20 +195,18 @@ namespace lab_2_verevka
 
                 // Вывод результата
                 ResultBox.Text = $"Анализ завершен.\n" +
-                                 $"Переменная: {variableName}\n" + // !!! ДОБАВЛЕНО: вывод имени переменной !!!
+                                 $"Переменная: {variableName}\n" + 
                                  $"Тип предиката: {type}\n" +
                                  $"Область NCalc: {ncalcText}\n" +
                                  $"Найдено отрезков истинности: {segments.Count}";
             }
             catch (Exception ex)
             {
-                // --- 7. Обработка ЛЮБОЙ Ошибки ---
+              
                 ResultBox.Background = Brushes.MistyRose;
                 ResultBox.Text = $"ОШИБКА:\n{ex.Message}";
             }
         }
-        // --- Вспомогательные методы (Ваш код для кнопок символов) ---
-
         // Единый обработчик для всех кнопок символов
         private void InsertSymbol_Click(object sender, RoutedEventArgs e)
         {

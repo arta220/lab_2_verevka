@@ -12,7 +12,7 @@ public class PlotGenerator
     {
         var plotModel = new PlotModel { Title = "Область Истинности" };
 
-        // 1. Ось X (Значения)
+        //Ось X 
         plotModel.Axes.Add(new LinearAxis
         {
             Position = AxisPosition.Bottom,
@@ -21,7 +21,7 @@ public class PlotGenerator
             Title = "X"
         });
 
-        // 2. Ось Y (просто для визуализации, скрываем ее)
+        // Ось Y 
         plotModel.Axes.Add(new LinearAxis
         {
             Position = AxisPosition.Left,
@@ -30,9 +30,7 @@ public class PlotGenerator
             Maximum = 1
         });
 
-        // 3. Серия данных (отрезки)
-        // Мы будем использовать 'IntervalBarSeries' или 'AreaSeries' для отрезков.
-
+        // Отрезки
 
         var series = new AreaSeries
         {

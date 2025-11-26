@@ -12,7 +12,7 @@ public interface IPlotPredicateService
     List<TruthSegment> GetTruthSegments(Predicate predicate, double min, double max, double step);
 
     /// <summary>
-    /// Определяет тип предиката (AlwaysTrue, AlwaysFalse, Satisfiable) для заданного диапазона.
+    /// Определяет тип предиката: AlwaysTrue, AlwaysFalse, Satisfiable для заданного диапазона.
     /// </summary>
     PredicateAnalyzer.PredicateType GetPredicateType(Predicate predicate, double min, double max, double step);
 

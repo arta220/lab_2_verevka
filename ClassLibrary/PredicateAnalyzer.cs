@@ -146,7 +146,7 @@ public class PredicateAnalyzer
         var expression = predicate._NCalcExpression;
         bool hasAnyPoint = false;
 
-        // --- 1. Основной цикл ---
+        //   Основной цикл 
         for (double x = min; x <= max + (step / 2.0); x += step)
         {
             hasAnyPoint = true;
@@ -169,7 +169,7 @@ public class PredicateAnalyzer
             }
         }
 
-        // --- 2. Обработка пустого домена и окончательного результата ---
+        //  Обработка пустого домена и окончательного результата 
 
         if (!hasAnyPoint)
         {

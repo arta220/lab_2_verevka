@@ -12,6 +12,6 @@ public class Predicate
     {
         _NCalcExpression = ncalcExpression;
         _HasQuantifiers = hasQuantifiers;
-        VariableName = variableName; // Сохраняем имя переменной
+        VariableName = variableName; 
     }
 }

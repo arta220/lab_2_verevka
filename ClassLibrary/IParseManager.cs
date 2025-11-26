@@ -8,12 +8,12 @@ using static PredicateAnalyzer;
 public interface IParserManager
 {
     /// <summary>
-    /// Проверяет, является ли выражение предикатом (содержит операторы сравнения и переменные).
+    /// Проверяет, является ли выражение предикатом 
     /// </summary>
     bool IsPredicate(string expression);
 
     /// <summary>
-    /// Проверяет, содержит ли выражение кванторы (∀ или ∃).
+    /// Проверяет, содержит ли выражение кванторы
     /// </summary>
     bool HasQuantifiers(string expression);
 
@@ -23,12 +23,12 @@ public interface IParserManager
     string NormalizeToNCalc(string expression);
 
     /// <summary>
-    /// Определяет тип первого квантора (∀ или ∃) в формуле.
+    /// Определяет тип первого квантора в формуле.
     /// </summary>
     QuantifierEvaluationType GetQuantifierType(string expression);
 
     /// <summary>
-    /// Извлекает имя переменной, связанной квантором (например, 'x' из '∀x (x>0)') или первую переменную в предикате.
+    /// Извлекает имя переменной, связанной квантором или первую переменную в предикате.
     /// </summary>
     string ExtractQuantifierVariable(string expression);
 }
