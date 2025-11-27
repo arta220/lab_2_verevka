@@ -21,7 +21,7 @@ public class Parser
     /// недопустимый токен (что-то, что не является оператором или допустимым символом).
     /// Например, в "x asdf < 5" после 'x' идет 'asdf'.
     /// </summary>
-    private bool IsVariableFollowedByInvalidToken(string expression)
+    private bool IsInvalidTokensNearVariable(string expression)
     {
        // поиск переменной
         var varMatch = Regex.Match(expression, variablePattern);
@@ -68,7 +68,7 @@ public class Parser
     /// </summary>
     public bool IsPredicate(string expression)
     {
-        if (IsVariableFollowedByInvalidToken(expression))
+        if (IsInvalidTokensNearVariable(expression))
         {
             return false;
         }
@@ -155,6 +155,76 @@ public class Parser
 
         return normalized;
     }
+
+    /// <summary>
+    /// Проверяет выражение на:
+    /// 1) логическое отрицание перед переменной без скобок
+    /// 2) незакрытые или лишние скобки
+    /// Возвращает true, если ошибок нет.
+    /// </summary>
+    public bool ValidateNegationAndParentheses(string expression)
+    {
+        string s = expression;
+
+        // Проверка незакрытых скобок
+
+        Stack<char> stack = new Stack<char>();
+
+        foreach (char c in s)
+        {
+            if (c == '(')
+                stack.Push('(');
+            else if (c == ')')
+            {
+                if (stack.Count == 0)
+                    return false; // лишняя закрывающая скобка
+                stack.Pop();
+            }
+        }
+
+        if (stack.Count > 0)
+            return false; // есть незакрытые скобки
+
+        string compact = Regex.Replace(s, @"\s+", "");
+
+        // паттерны отрицания
+        string[] ops = { "!", "NOT", "НЕ", "¬" };
+
+        foreach (var op in ops)
+        {
+            int index = compact.IndexOf(op);
+            while (index != -1)
+            {
+                int end = index + op.Length;
+
+                // если после оператора конец строки — ошибка
+                if (end >= compact.Length)
+                    return false;
+
+                char next = compact[end];
+
+                // если сразу идёт '(' — это разрешено
+                if (next == '(')
+                {
+                    index = compact.IndexOf(op, end);
+                    continue;
+                }
+
+                // если после отрицания идёт буква/цифра/переменная — запрещено
+                if (char.IsLetterOrDigit(next))
+                    return false;
+
+                // если идёт знак типа x+..., это тоже запрещённый вариант (!x+1)
+                if (next == '_' || next == '+' || next == '-' || next == '*' || next == '/')
+                    return false;
+
+                index = compact.IndexOf(op, end);
+            }
+        }
+
+        return true;
+    }
+
 
 
 

@@ -16,8 +16,13 @@ public class ParserManager : IParserManager
         if (string.IsNullOrWhiteSpace(expression))
             throw new ArgumentException("Выражение не может быть пустым.", nameof(expression));
 
+        if (!_parser.ValidateNegationAndParentheses(expression))
+            throw new ArgumentException("Некорректный синтаксис.");
+
         return _parser.IsPredicate(expression);
     }
+
+
 
     public bool HasQuantifiers(string expression)
     {
