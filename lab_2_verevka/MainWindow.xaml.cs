@@ -125,7 +125,7 @@ namespace lab_2_verevka
                 // Проверка, является ли это предикатом
                 if (!_parserManager.IsPredicate(formula))
                 {
-                    throw new ArgumentException("Введенная строка не является предикатом (нет переменных или оператора сравнения).");
+                    throw new ArgumentException("Введенная строка не является предикатом.");
                 }
 
                 // Получаем данные от парсера
